@@ -40,4 +40,23 @@ defmodule MyTime do
 end
 ```
 
+Now you sould be able to defstruct and then use Ndecode in your module, the order is important
 
+``` elixir
+
+defmodule X do
+  defstruct name: :foo, time: %MyTime{}
+  use Ndecode
+end
+```
+
+Finally you can encode and decode correctly, make sure you pass the keys: :atoms or keys: :atoms! option to poison
+
+``` elixir
+
+s = Poison.encode!(%X{})
+x = Poison.decode!(s,[keys: :atoms,as: X])
+IO.inspect x
+```
+
+see test for working example
