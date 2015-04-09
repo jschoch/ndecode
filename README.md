@@ -54,9 +54,12 @@ Finally you can encode and decode correctly, make sure you pass the keys: :atoms
 
 ``` elixir
 
-s = Poison.encode!(%X{})
-x = Poison.decode!(s,[keys: :atoms,as: X])
-IO.inspect x
+iex(1)> s = Poison.encode!(%X{})
+iex(2)> x = Poison.decode!(s,[keys: :atoms,as: X])
+iex(3)> IO.inspect x
+
+  %X{name: "foo", time: %MyTime{stamp: {0, 0, 0}}}
 ```
+ 
 
 see test for working example
