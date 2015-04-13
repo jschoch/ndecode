@@ -32,7 +32,8 @@ defmodule NdecodeTest do
     IO.puts "X: " <> inspect s
     x = Poison.decode!(s, [keys: :atoms,as: X])
     IO.puts "X: " <> inspect x
-    assert %MyTime{} = x.ts
+    #assert %MyTime{} = x.ts
     assert is_tuple(x.ts.stamp)
+    assert match?(%MyTime{},x.ts)
   end
 end

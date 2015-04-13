@@ -17,6 +17,7 @@ defmodule Ndecode do
           case Code.ensure_loaded(decoder_name) do
             {:module,_} ->
               decoded = decoder_name.decode(val,as: mod_struct)
+              Logger.warn "decoded: #{inspect decoded, pretty: true}"
               map = Map.put(map,key,decoded)
             {:error,reason} ->
               Loggger.warn "couldn't decode #{decoder_name} #{inspect reason}"
