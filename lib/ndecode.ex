@@ -8,7 +8,7 @@ defmodule Ndecode do
         end
       end
       defimpl Poison.Decoder, for: __MODULE__ do
-        defp nd(map,key,val) do
+        defp ndecode(map,key,val) do
           mod_name = Map.fetch!(val,:__struct__)
           mod_atom = String.to_atom(mod_name)
           mod_struct = mod_atom.__struct__.__struct__
@@ -17,7 +17,6 @@ defmodule Ndecode do
           case Code.ensure_loaded(decoder_name) do
             {:module,_} ->
               decoded = decoder_name.decode(val,as: mod_struct)
-              Logger.warn "decoded: #{inspect decoded, pretty: true}"
               map = Map.put(map,key,decoded)
             {:error,reason} ->
               Loggger.warn "couldn't decode #{decoder_name} #{inspect reason}"
@@ -29,10 +28,9 @@ defmodule Ndecode do
             if (is_map(val)) do
               case Map.has_key?(val,:__struct__) do
                 true ->
-                  map = nd(map,key,val)
-                  IO.puts "map now: " <>  inspect map
+                  map = ndecode(map,key,val)
                 false ->
-                  Logger.warn "didn't find a :__struct__ for #{key}"
+                  Logger.debug "didn't find a :__struct__ for #{key}"
               end
             end
             map
